@@ -30,8 +30,8 @@ export default class Items extends React.Component {
         autoClose={true}>
         <TouchableHighlight>
         <View style={styles.item}>
-          <Text>
-            {item.key}
+          <Text style={styles.itemName}>
+            {item.name}
           </Text>
         </View>
         </TouchableHighlight>
@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
   },
   item: {
     height: 72,
-    padding: 10
+    padding: 10,
+    backgroundColor: '#f00',
+  },
+  itemName: {
+    justifyContent: 'center',
+    fontSize: 36,
   }
 })
