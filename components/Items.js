@@ -53,10 +53,13 @@ const styles = StyleSheet.create({
   item: {
     height: 72,
     padding: 10,
-    backgroundColor: '#f00',
+    backgroundColor: '#ff0',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontFamily: 'NotoSansJP',
   },
   itemName: {
-    justifyContent: 'center',
     fontSize: 36,
+    fontFamily: 'NotoSansJP',
   }
 })
