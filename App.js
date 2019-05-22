@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, SafeAreaView, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, TextInput, View, SafeAreaView, TouchableHighlight } from 'react-native';
+import Modal from 'react-native-modal';
 import { Font } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
@@ -43,17 +44,16 @@ export default class App extends React.Component {
             <Icon name="md-create" style={styles.fab}/>
          </ActionButton>
          <Modal 
-            visible={this.state.modalVisible}
-            animationType='fade'
-            presentationStyle='pageSheet'>
-           <View>
-             <Text>Hello world!</Text>
+            isVisible={this.state.modalVisible}
+            >
+           <View style={{ fles: 1}}>
+             <Text>Hello</Text>
              <TouchableHighlight
                onPress={()=> {
                  this.setState({modalVisible: !this.state.modalVisible});
                }}>
-                 <View>
-                <Text>Hide modal</Text>
+                <View>
+                <Text>Hide modal!!!</Text>
                 <TextInput editable={true}>
 
                 </TextInput>
