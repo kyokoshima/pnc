@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   item: {
     height: 72,
     padding: 10,
-    backgroundColor: '#ff0',
+    backgroundColor: '#eee',
     alignItems: 'center',
     justifyContent: 'center',
     fontFamily: 'NotoSansJP',

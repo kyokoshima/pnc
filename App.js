@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TextInput, View, SafeAreaView, Modal, TouchableHighlight } from 'react-native';
 import { Font } from 'expo';
+import Icon from '@expo/vector-icons/Ionicons';
+import ActionButton from 'react-native-action-button';
 
 import Items from './components/Items';
 
@@ -9,6 +11,7 @@ export default class App extends React.Component {
     super();
     this.state = {
       ready: false,
+      modalVisible: false,
     }
   }
 
@@ -35,8 +38,38 @@ export default class App extends React.Component {
           <Text>Safe area</Text>
         </View>
         <Items items={items} /> 
+        <ActionButton
+            onPress={() => {this.setState({modalVisible: true})}}>
+            <Icon name="md-create" style={styles.fab}/>
+         </ActionButton>
+         <Modal 
+            visible={this.state.modalVisible}
+            animationType='fade'
+            presentationStyle='pageSheet'>
+           <View>
+             <Text>Hello world!</Text>
+             <TouchableHighlight
+               onPress={()=> {
+                 this.setState({modalVisible: !this.state.modalVisible});
+               }}>
+                 <View>
+                <Text>Hide modal</Text>
+                <TextInput editable={true}>
+
+                </TextInput>
+                </View>
+             </TouchableHighlight>
+           </View>
+         </Modal>
       </SafeAreaView>
       );
   }
 }
 
+const styles = StyleSheet.create({
+  fab: {
+    fontSize: 20,
+    height: 22,
+    color: '#fff'
+  }
+})
