@@ -48,7 +48,9 @@ export default class App extends React.Component {
             >
            <View style={styles.modalContent}>
              <Text>Hello</Text>
-             <TextInput editable={true} maxLength={40}></TextInput>
+             <TextInput placeholder='Item name' editable={true} maxLength={40}
+              style={{borderBottomWidth: 2}}
+             ></TextInput>
              <Button title="Hide modal" onPress={() => this.setState({modalVisible: false})} />
            </View>
          </Modal>
@@ -65,6 +67,6 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    height: 100
+    padding: 20
   }
 })
