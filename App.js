@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, SafeAreaView, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, TextInput, View, SafeAreaView, TouchableHighlight, Button } from 'react-native';
 import Modal from 'react-native-modal';
 import { Font } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
@@ -46,19 +46,10 @@ export default class App extends React.Component {
          <Modal 
             isVisible={this.state.modalVisible}
             >
-           <View style={{ fles: 1}}>
+           <View style={styles.modalContent}>
              <Text>Hello</Text>
-             <TouchableHighlight
-               onPress={()=> {
-                 this.setState({modalVisible: !this.state.modalVisible});
-               }}>
-                <View>
-                <Text>Hide modal!!!</Text>
-                <TextInput editable={true}>
-
-                </TextInput>
-                </View>
-             </TouchableHighlight>
+             <TextInput editable={true} maxLength={40}></TextInput>
+             <Button title="Hide modal" onPress={() => this.setState({modalVisible: false})} />
            </View>
          </Modal>
       </SafeAreaView>
@@ -71,5 +62,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 22,
     color: '#fff'
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    height: 100
   }
 })
