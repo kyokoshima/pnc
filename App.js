@@ -10,24 +10,28 @@ import Items from './components/Items';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+   
     this.state = {
       ready: false,
       modalVisible: false,
       items: []
     }
     this.toggleItemState = this.toggleItemState.bind(this);
+    this.updateItems = this.updateItems.bind(this);
   }
 
   async componentDidMount() {
+    
     await Font.loadAsync({
       'NotoSansJP': require('./assets/fonts/NotoSansJP-Black.otf'),
     });
-    this.setState({ ready: true });
+    this.setState({ready: true});
     let items = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
     .map((v, i) => {
       return { name: v, key: UUID(), on: false};
     });
-    // this.setState({items: items});
+    this.updateItems(items);
+   
   }
   toggleItemState(item) {
     let items = this.state.items.slice();
@@ -39,11 +43,17 @@ export default class App extends React.Component {
     });
     this.setState({items: items});
   }
+  updateItems(items) {
+    console.log('updating');
+    this.setState({items: items});
+  }
   render() {
+    console.log('render');
     if (!this.state.ready) {
+      console.log('loading');
       return <View><Text>Loading/¥...</Text></View>
     }
-    
+
     return (
       <SafeAreaView style={{ flex: 1}}>
         <View>

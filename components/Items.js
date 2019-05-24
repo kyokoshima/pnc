@@ -5,6 +5,10 @@ import Swipeout from 'react-native-swipeout';
 
 
 export default class Items extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.updateItemState = this.updateItemState.bind(this);
+  }
   updateItemState(item) {
     this.props.handler(item);
   }
@@ -22,7 +26,9 @@ export default class Items extends React.Component {
   } 
   _renderItem({ item, index }) {
     return (
-        <TouchableHighlight onPress={ this.updateItemState(item) }>
+        <TouchableHighlight 
+          onPress={ this.updateItemState.bind(this, item) }
+          underlayColor= { item.on ? '#fff' : '#444' }>
         <View style={styles.item}>
           <Text style={styles.itemName}>
             {item.name} {item.on}
