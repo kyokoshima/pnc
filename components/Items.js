@@ -5,11 +5,14 @@ import Swipeout from 'react-native-swipeout';
 
 
 export default class Items extends React.Component {
+  updateItemState(item) {
+    this.props.handler(item);
+  }
   render() {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.items.data}
+          data={this.props.items}
           renderItem={this._renderItem.bind(this)}
           keyExtractor={(item, index) => item.key}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -18,24 +21,14 @@ export default class Items extends React.Component {
     );
   } 
   _renderItem({ item, index }) {
-    const swipeBtns = [{
-      text: 'Aaaaaaa',
-      backgroundColor: 'blue',
-      underlayColor: 'rbga(0,0,0,1)',
-      onPress: () =>  console.log('pressed') 
-    }];
     return (
-      <Swipeout
-        right={swipeBtns}
-        autoClose={true}>
-        <TouchableHighlight>
+        <TouchableHighlight onPress={ this.updateItemState(item) }>
         <View style={styles.item}>
           <Text style={styles.itemName}>
-            {item.name}
+            {item.name} {item.on}
           </Text>
         </View>
         </TouchableHighlight>
-      </Swipeout>
     )
   }
 }

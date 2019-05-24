@@ -4,16 +4,18 @@ import Modal from 'react-native-modal';
 import { Font } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
-
+import UUID from 'uuid/v1';
 import Items from './components/Items';
 
 export default class App extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       ready: false,
       modalVisible: false,
+      items: []
     }
+    this.toggleItemState = this.toggleItemState.bind(this);
   }
 
   async componentDidMount() {
@@ -21,24 +23,33 @@ export default class App extends React.Component {
       'NotoSansJP': require('./assets/fonts/NotoSansJP-Black.otf'),
     });
     this.setState({ ready: true });
+    let items = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
+    .map((v, i) => {
+      return { name: v, key: UUID(), on: false};
+    });
+    // this.setState({items: items});
+  }
+  toggleItemState(item) {
+    let items = this.state.items.slice();
+    items = items.map((v) => {
+      if (v.key === item.key) {
+        v.on = !v.on;
+      }
+      return v;
+    });
+    this.setState({items: items});
   }
   render() {
     if (!this.state.ready) {
       return <View><Text>Loading/¥...</Text></View>
     }
-    let data = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
-    .map((v, i) => {
-      return { name: v, key: `${i}`};
-    });
-    let items = {
-      data: data,
-    };
+    
     return (
       <SafeAreaView style={{ flex: 1}}>
         <View>
           <Text>Safe area</Text>
         </View>
-        <Items items={items} /> 
+        <Items items={this.state.items} handler={this.toggleItemState}/> 
         <ActionButton
             onPress={() => {this.setState({modalVisible: true})}}>
             <Icon name="md-create" style={styles.fab}/>
