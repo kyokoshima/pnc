@@ -16,8 +16,9 @@ export default class App extends React.Component {
       modalVisible: false,
       items: []
     }
-    this.toggleItemState = this.toggleItemState.bind(this);
+    // this.toggleItemState = this.toggleItemState.bind(this);
     this.updateItems = this.updateItems.bind(this);
+    this.updateItem = this.updateItem.bind(this);
   }
 
   async componentDidMount() {
@@ -33,15 +34,24 @@ export default class App extends React.Component {
     this.updateItems(items);
    
   }
-  toggleItemState(item) {
-    let items = this.state.items.slice();
-    items = items.map((v) => {
-      if (v.key === item.key) {
-        v.on = !v.on;
-      }
-      return v;
-    });
-    this.setState({items: items});
+  removeItem(item) {
+
+  }
+  addItem(item) {
+
+  }
+  updateItem(item) {
+    console.log(this.state.items);
+    if (item != undefined) {
+      let items = this.state.items.slice();
+      items = items.map((v) => {
+        if (v.key === item.key) {
+          v.on = !v.on;
+        }
+        return v;
+      });
+      this.setState({items: items});
+    }
   }
   updateItems(items) {
     console.log('updating');
@@ -59,7 +69,11 @@ export default class App extends React.Component {
         <View>
           <Text>Safe area</Text>
         </View>
-        <Items items={this.state.items} handler={this.toggleItemState}/> 
+        <Items items={this.state.items} 
+          updateItem={this.updateItem} 
+          addItem={this.addItem}
+          removeItem={this.removeItem} 
+          updateItems={this.updateItems}/> 
         <ActionButton
             onPress={() => {this.setState({modalVisible: true})}}>
             <Icon name="md-create" style={styles.fab}/>

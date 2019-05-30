@@ -10,7 +10,7 @@ export default class Items extends React.Component {
     // this.updateItemState = this.updateItemState.bind(this);
   }
   updateItemState(item) {
-    this.props.handler(item);
+    this.props.updateItem(item);
   }
   render() {
     return (
