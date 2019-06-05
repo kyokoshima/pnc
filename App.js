@@ -14,34 +14,57 @@ export default class App extends React.Component {
     this.state = {
       ready: false,
       modalVisible: false,
-      items: []
+      items: [],
+      newItemName: ''
     }
-    // this.toggleItemState = this.toggleItemState.bind(this);
-    this.updateItems = this.updateItems.bind(this);
+    this.updateAllItems = this.updateAllItems.bind(this);
     this.updateItem = this.updateItem.bind(this);
   }
 
-  async componentDidMount() {
-    
-    await Font.loadAsync({
-      'NotoSansJP': require('./assets/fonts/NotoSansJP-Black.otf'),
-    });
+  async loadFont() {
+    try {
+      // Load custom font
+      await Font.loadAsync({
+        'NotoSansJP': require('./assets/fonts/NotoSansJP-Black.otf'),
+      });
+      console.log('loading font');
+    } catch(err) {
+      console.log(err);
+    }
     this.setState({ready: true});
+  }
+  componentDidMount() {
+    this.loadFont();
     let items = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
     .map((v, i) => {
       return { name: v, key: UUID(), on: false};
     });
-    this.updateItems(items);
-   
+    this.updateAllItems(items);
+    
   }
+  componentWillUnmount() {
+  
+  }
+  /**
+   * Remove item from the state
+   * @param {object} item 
+   */
   removeItem(item) {
 
   }
+  /**
+   * Add item to the state
+   * @param {object} item 
+   */
   addItem(item) {
 
   }
+  /**
+   * Update single item in the state
+   * @param {object} item 
+   */
   updateItem(item) {
-    console.log(this.state.items);
+    // console.log(this.state.items);
     if (item != undefined) {
       let items = this.state.items.slice();
       items = items.map((v) => {
@@ -53,15 +76,20 @@ export default class App extends React.Component {
       this.setState({items: items});
     }
   }
-  updateItems(items) {
+  /**
+   * Update all items in the state
+   * @param {Array} items 
+   */
+  updateAllItems(items) {
     console.log('updating');
     this.setState({items: items});
   }
+
   render() {
     console.log('render');
     if (!this.state.ready) {
       console.log('loading');
-      return <View><Text>Loading/¥...</Text></View>
+      return <View><Text>Loading...</Text></View>
     }
 
     return (
@@ -73,7 +101,7 @@ export default class App extends React.Component {
           updateItem={this.updateItem} 
           addItem={this.addItem}
           removeItem={this.removeItem} 
-          updateItems={this.updateItems}/> 
+          updateAllItems={this.updateAllItems}/> 
         <ActionButton
             onPress={() => {this.setState({modalVisible: true})}}>
             <Icon name="md-create" style={styles.fab}/>
@@ -83,8 +111,13 @@ export default class App extends React.Component {
             >
            <View style={styles.modalContent}>
              <Text>Hello</Text>
-             <TextInput placeholder='Item name' editable={true} maxLength={40}
+             <TextInput 
+              name='newItemName'
+              placeholder='Item name' 
+              maxLength={40}
               style={{borderBottomWidth: 2}}
+              onChangeText={(text) => this.setState({newItemName: text})}
+              value={this.state.newItemName}
              ></TextInput>
              <Button title="Hide modal" onPress={() => this.setState({modalVisible: false})} />
            </View>

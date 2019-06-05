@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { FlatList, View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import Swipeout from 'react-native-swipeout';
+import { FlatList, View, Text, 
+  StyleSheet, TouchableHighlight, Dimensions } from 'react-native';
 
 
 export default class Items extends React.Component {
   constructor(props) {
     super(props);
     // this.updateItemState = this.updateItemState.bind(this);
+    this.renderItem = this.renderItem.bind(this);
   }
   updateItemState(item) {
     this.props.updateItem(item);
@@ -17,21 +18,23 @@ export default class Items extends React.Component {
       <View style={styles.container}>
         <FlatList
           data={this.props.items}
-          renderItem={this._renderItem.bind(this)}
+          renderItem={this.renderItem}
           keyExtractor={(item, index) => item.key}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
         />
       </View>
     );
   } 
-  _renderItem({ item, index }) {
+  renderItem({ item, index }) {
     return (
         <TouchableHighlight 
           onPress={ this.updateItemState.bind(this, item) }
-          underlayColor= { item.on ? '#fff' : '#444' }>
-        <View style={styles.item}>
+          >
+        <View style={[styles.item, 
+            {backgroundColor: item.on ? '#fff' : '#444'},
+            {height: Dimensions.get('window').height / 5}]}>
           <Text style={styles.itemName}>
-            {item.name} {item.on}
+            {item.name} {item.on ? 'on' : 'off'}
           </Text>
         </View>
         </TouchableHighlight>
