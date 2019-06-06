@@ -19,6 +19,7 @@ export default class App extends React.Component {
     }
     this.updateAllItems = this.updateAllItems.bind(this);
     this.updateItem = this.updateItem.bind(this);
+    this.addItem = this.addItem.bind(this);
   }
 
   async loadFont() {
@@ -54,10 +55,17 @@ export default class App extends React.Component {
   }
   /**
    * Add item to the state
-   * @param {object} item 
    */
-  addItem(item) {
-
+  addItem() {
+    let itemName = this.state.newItemName;
+    if (itemName && itemName.length) {
+      let newItem = {name: itemName, key:UUID(), on: false};
+      this.setState({
+        newItemName: '',
+        items: this.state.items.concat(newItem)
+      })
+    }
+    this.setState({modalVisible: false});
   }
   /**
    * Update single item in the state
@@ -108,6 +116,7 @@ export default class App extends React.Component {
          </ActionButton>
          <Modal 
             isVisible={this.state.modalVisible}
+            onBackdropPress={() => this.setState({modalVisible: false})}
             >
            <View style={styles.modalContent}>
              <Text>Hello</Text>
@@ -119,7 +128,7 @@ export default class App extends React.Component {
               onChangeText={(text) => this.setState({newItemName: text})}
               value={this.state.newItemName}
              ></TextInput>
-             <Button title="Hide modal" onPress={() => this.setState({modalVisible: false})} />
+             <Button title="Add item" onPress={this.addItem} />
            </View>
          </Modal>
       </SafeAreaView>
@@ -135,6 +144,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 20
+    padding: 20,
+    height: 300
   }
 })

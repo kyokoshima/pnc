@@ -2,6 +2,7 @@
 import React from 'react';
 import { FlatList, View, Text, 
   StyleSheet, TouchableHighlight, Dimensions } from 'react-native';
+import Swipeout from 'react-native-swipeout';
 
 
 export default class Items extends React.Component {
@@ -26,7 +27,11 @@ export default class Items extends React.Component {
     );
   } 
   renderItem({ item, index }) {
+    const btns = [
+      { text: 'Button' }
+    ];
     return (
+      <Swipeout right={btns}>
         <TouchableHighlight 
           onPress={ this.updateItemState.bind(this, item) }
           >
@@ -38,6 +43,7 @@ export default class Items extends React.Component {
           </Text>
         </View>
         </TouchableHighlight>
+      </Swipeout>
     )
   }
 }
