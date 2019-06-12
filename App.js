@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, SafeAreaView, TouchableHighlight, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View, SafeAreaView, 
+  TouchableHighlight, Button, AsyncStorage } from 'react-native';
 import Modal from 'react-native-modal';
 import { Font } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
@@ -34,13 +35,19 @@ export default class App extends React.Component {
     }
     this.setState({ready: true});
   }
+  async loadStoredItems() {
+    let items = await JSON.perse(AsyncStorage.getItem('items'));
+    if (items) {
+      this.updateAllItems(items);
+    }
+  }
   componentDidMount() {
     this.loadFont();
-    let items = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
-    .map((v, i) => {
-      return { name: v, key: UUID(), on: false};
-    });
-    this.updateAllItems(items);
+    // let items = ['アイロン','こたつ','エアコン','テレビ','施錠','身分証明書','サイフ','ケータイ']
+    // .map((v, i) => {
+    //   return { name: v, key: UUID(), on: false};
+    // });
+    
     
   }
   componentWillUnmount() {
@@ -60,10 +67,8 @@ export default class App extends React.Component {
     let itemName = this.state.newItemName;
     if (itemName && itemName.length) {
       let newItem = {name: itemName, key:UUID(), on: false};
-      this.setState({
-        newItemName: '',
-        items: this.state.items.concat(newItem)
-      })
+      this.updateAllItems(this.state.items.concat(newItem));
+      this.setState({newItemName: ''})
     }
     this.setState({modalVisible: false});
   }
@@ -81,16 +86,21 @@ export default class App extends React.Component {
         }
         return v;
       });
-      this.setState({items: items});
+      this.updateAllItems(items);
     }
   }
   /**
    * Update all items in the state
    * @param {Array} items 
    */
-  updateAllItems(items) {
+  async updateAllItems(items) {
     console.log('updating');
     this.setState({items: items});
+    try {
+    await AsyncStorage.setItem('items', JSON.stringify(items));
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -111,8 +121,9 @@ export default class App extends React.Component {
           removeItem={this.removeItem} 
           updateAllItems={this.updateAllItems}/> 
         <ActionButton
-            onPress={() => {this.setState({modalVisible: true})}}>
-            <Icon name="md-create" style={styles.fab}/>
+            onPress={() => {this.setState({modalVisible: true})}}
+            >
+            <Icon name="md-add" style={styles.fab}/>
          </ActionButton>
          <Modal 
             isVisible={this.state.modalVisible}
