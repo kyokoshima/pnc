@@ -1,12 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View, SafeAreaView, 
-  TouchableHighlight, Button, AsyncStorage } from 'react-native';
+  TouchableHighlight, Button, AsyncStorage,
+  Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import { Font } from 'expo';
 import Icon from '@expo/vector-icons/Ionicons';
 import ActionButton from 'react-native-action-button';
 import UUID from 'uuid/v1';
 import Items from './components/Items';
+import {IntlProvider, FormattedMessage} from 'react-intl';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -120,11 +122,10 @@ export default class App extends React.Component {
           addItem={this.addItem}
           removeItem={this.removeItem} 
           updateAllItems={this.updateAllItems}/> 
-        <ActionButton
-            onPress={() => {this.setState({modalVisible: true})}}
-            >
-            <Icon name="md-add" style={styles.fab}/>
-         </ActionButton>
+        <ActionButton onPress={() => {this.setState({modalVisible: true})}}>
+          <Icon name="md-add" style={styles.fab}/>
+        </ActionButton>
+         
          <Modal 
             isVisible={this.state.modalVisible}
             onBackdropPress={() => this.setState({modalVisible: false})}
@@ -135,7 +136,7 @@ export default class App extends React.Component {
               name='newItemName'
               placeholder='Item name' 
               maxLength={40}
-              style={{borderBottomWidth: 2}}
+              style={styles.itemInput}
               onChangeText={(text) => this.setState({newItemName: text})}
               value={this.state.newItemName}
              ></TextInput>
@@ -155,7 +156,11 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: '#fff',
-    padding: 20,
-    height: 300
-  }
+    padding: 50,
+    height: Dimensions.get('window').height / 3
+  },
+  itemInput: {
+    fontSize: 24,
+    borderBottomWidth: 2
+  } 
 })
